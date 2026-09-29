@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kairo — Game & Systems Developer</title>
+<meta name="description" content="Kairo: 10-year-old developer. Shipped X-Parkour (Godot) and KairoOS (custom x86-64 kernel).">
+<style>
+  :root {
+    --bg: #07080c; --panel: #0d1117; --line: #1e293b;
+    --text: #e8ecf3; --dim: #94a3b8;
+    --accent: #fbbf24; --accent2: #38bdf8; --green: #34d399;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    line-height: 1.6; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+  .sunset { height: 6px; background: linear-gradient(90deg, #1e1b4b, #7c2d12, #f59e0b, #fbbf24); }
+  /* ---------- top bar ---------- */
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+  nav .logo { font-weight: 800; font-size: 20px; letter-spacing: 1px; }
+  nav .logo span { color: var(--accent); }
+  nav .links { display: flex; gap: 22px; }
+  nav .links a { color: var(--dim); text-decoration: none; font-size: 14px; font-weight: 600; }
+  nav .links a:hover { color: var(--text); }
+  /* ---------- hero / bio ---------- */
+  .hero { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 44px 0 20px; align-items: center; }
+  @media (min-width: 760px) { .hero { grid-template-columns: 220px 1fr; } }
+  .avatar {
+    width: 200px; height: 200px; border-radius: 50%; margin: 0 auto;
+    background: linear-gradient(135deg, #7c2d12, #f59e0b);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 88px; font-weight: 800; color: #07080c;
+    border: 4px solid #3a2f10; overflow: hidden; flex-shrink: 0;
+  }
+  /* Per usare una foto vera: metti photo.jpg in questa cartella e sostituisci
+     il div.avatar con: <img class="avatar" src="photo.jpg" alt="Kairo"> */
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .hero h1 { font-size: clamp(38px, 6vw, 58px); font-weight: 800; letter-spacing: -1px; line-height: 1.1; }
+  .hero h1 span { color: var(--accent); }
+  .role { color: var(--accent2); font-weight: 700; margin: 8px 0 12px; font-size: 17px; }
+  .bio { color: var(--dim); font-size: 16px; max-width: 640px; }
+  .bio strong { color: var(--text); }
+  .cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+  .btn { display: inline-block; padding: 13px 30px; border-radius: 999px;
+    font-weight: 700; font-size: 15px; text-decoration: none;
+    transition: transform .12s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-gold { background: var(--accent); color: #07080c; }
+  .btn-ghost { background: #1e293b; color: #fff; }
+  /* ---------- gallery ---------- */
+  section { padding: 34px 0; }
+  h2 { font-size: 26px; }
+  .sub { color: var(--dim); margin: 4px 0 22px; }
+  .shot {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
+    overflow: hidden; margin-bottom: 26px;
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot .info { padding: 24px 28px 28px; }
+  .shot .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .shot h3 { font-size: 24px; }
+  .badge { font-size: 12px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px;
+    border-radius: 999px; text-transform: uppercase; }
+  .badge.live { background: rgba(52,211,153,.12); color: var(--green); border: 1px solid rgba(52,211,153,.35); }
+  .badge.exp { background: rgba(56,189,248,.1); color: var(--accent2); border: 1px solid rgba(56,189,248,.3); }
+  .shot p { color: var(--dim); font-size: 15px; max-width: 720px; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 4px; }
+  .tag { font-size: 12px; background: #1a2230; color: #cbd5e1; padding: 4px 10px; border-radius: 8px; }
+  .shot .go { display: inline-block; margin-top: 12px; color: var(--accent); font-weight: 700;
+    font-size: 16px; text-decoration: none; }
+  .shot .go:hover { text-decoration: underline; }
+  /* ---------- skills ---------- */
+  .skill-groups { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .skill-groups { grid-template-columns: 1fr 1fr 1fr; } }
+  .skill {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+  }
+  .skill h4 { font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px; }
+  .skill ul { list-style: none; }
+  .skill li { color: var(--dim); font-size: 15px; padding: 5px 0; border-top: 1px solid #141a24; }
+  .skill li:first-child { border-top: none; }
+  .skill li b { color: var(--text); }
+  /* ---------- timeline ---------- */
+  .tl { position: relative; margin-left: 8px; padding-left: 28px; border-left: 2px solid var(--line); }
+  .tl-item { position: relative; padding-bottom: 26px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: ""; position: absolute; left: -36px; top: 4px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--bg); border: 3px solid var(--accent);
+  }
+  .tl-item.now::before { background: var(--accent); box-shadow: 0 0 14px rgba(251,191,36,.7); }
+  .tl-item h4 { font-size: 17px; }
+  .tl-item p { color: var(--dim); font-size: 15px; }
+  footer { text-align: center; color: var(--dim); font-size: 13px; padding: 30px 0 46px; }
+  footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+<div class="sunset"></div>
+<div class="wrap">
+
+  <nav>
+    <div class="logo">KAIRODEV<span style="color:var(--accent)">.</span></div>
+    <div class="links">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#journey">Journey</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="avatar">K</div>
+    <div>
+      <h1>Hi, I'm Kairo<span>.</span></h1>
+      <p class="role">10-year-old game &amp; systems developer</p>
+      <p class="bio">I build <strong>finished things</strong>: games you can download and play,
+        and an operating system that boots on real hardware. I work in Godot and in C/ASM,
+        and I run my own release pipeline with automatic updates. Currently aiming at console development.</p>
+      <div class="cta">
+        <a class="btn btn-gold" href="https://greenpixel-games.itch.io/xparkour">▶ Play X-Parkour</a>
+        <a class="btn btn-ghost" href="https://github.com/Test-create-ops">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <p class="sub">Shipped and playable — not demos.</p>
+
+    <div class="shot">
+      <img src="img/game.png" alt="X-Parkour gameplay at sunset">
+      <div class="info">
+        <div class="row"><h3>X-Parkour</h3><span class="badge live">● Released · v0.4.6</span></div>
+        <p>Cute 3D parkour platformer at sunset. Extended obstacle course, checkpoints with respawn,
+          32 coins, dash with coin magnet, breakable bricks, best-time records, pause menu and
+          automatic updates via itch.io. Windows &amp; Linux.</p>
+        <div class="tags"><span class="tag">Godot 4</span><span class="tag">GDScript</span>
+          <span class="tag">3D Platformer</span><span class="tag">Butler CI releases</span></div>
+        <a class="go" href="https://greenpixel-games.itch.io/xparkour">Play on itch.io →</a>
+      </div>
+    </div>
+
+    <div class="shot">
+      <img src="img/os.png" alt="KairoOS running in QEMU">
+      <div class="info">
+        <div class="row"><h3>KairoOS</h3><span class="badge exp">● Experimental · QEMU</span></div>
+        <p>Hobby operating system for x86-64 written from scratch, solo: custom C + ASM kernel,
+          Multiboot2/PVH boot (UEFI + legacy), SMP scheduler, framebuffer GUI with windows,
+          filesystem, network stack, AC97 audio and a userspace shell. Boots in QEMU.</p>
+        <div class="tags"><span class="tag">C</span><span class="tag">x86-64 ASM</span>
+          <span class="tag">OSdev</span><span class="tag">Solo-built</span></div>
+        <a class="go" href="https://github.com/Test-create-ops/KairoOS-BETA">Source on GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <p class="sub">What I use to ship.</p>
+    <div class="skill-groups">
+      <div class="skill">
+        <h4>Game Dev</h4>
+        <ul>
+          <li><b>Godot 4</b> — 3D, particles, UI</li>
+          <li><b>GDScript</b> — gameplay, saves</li>
+          <li><b>Level design</b> — 45-unit course</li>
+        </ul>
+      </div>
+      <div class="skill">
+        <h4>Systems</h4>
+        <ul>
+          <li><b>C + x86-64 ASM</b> — custom kernel</li>
+          <li><b>Boot</b> — Multiboot2, UEFI</li>
+          <li><b>Drivers</b> — framebuffer, input</li>
+        </ul>
+      </div>
+      <div class="skill">
+        <h4>Shipping</h4>
+        <ul>
+          <li><b>Butler</b> — itch.io releases</li>
+          <li><b>Auto-updates</b> — in-game notifier</li>
+          <li><b>Web</b> — HTML/CSS, domains</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="journey">
+    <h2>Journey</h2>
+    <p class="sub">How I got here.</p>
+    <div class="tl">
+      <div class="tl-item">
+        <h4>First steps in Godot</h4>
+        <p>Learned the engine by building small prototypes and the Cute Parkour starter kit.</p>
+      </div>
+      <div class="tl-item">
+        <h4>X-Parkour shipped</h4>
+        <p>Extended course, checkpoints, records, dash, sunset atmosphere — released on itch.io with automatic updates (v0.4.6).</p>
+      </div>
+      <div class="tl-item">
+        <h4>KairoOS boots</h4>
+        <p>Custom x86-64 kernel written solo: SMP scheduler, GUI, filesystem, shell — running in QEMU.</p>
+      </div>
+      <div class="tl-item now">
+        <h4>Now: aiming at consoles</h4>
+        <p>Polishing shipped titles, joining game jams and building the portfolio for developer programs.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 KairoDev · <a href="https://kairodev.it">kairodev.it</a> ·
+    <a href="https://greenpixel-games.itch.io">itch.io</a> ·
+    <a href="https://github.com/Test-create-ops">GitHub</a>
+  </footer>
+
+</div>
+</body>
+</html>
